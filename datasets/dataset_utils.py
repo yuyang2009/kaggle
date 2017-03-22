@@ -67,18 +67,19 @@ def bytes_feature(values):
   return tf.train.Feature(bytes_list=tf.train.BytesList(value=[values]))
 
 
-def image_to_tfexample(image_data, image_format, height, width, class_id,
-    lst_ymin, lst_xmin, lst_ymax, lst_xmax):
+def image_to_tfexample(image_data, image_format, height, width, image_name,
+    lst_ymin, lst_xmin, lst_ymax, lst_xmax, lst_label):
   return tf.train.Example(features=tf.train.Features(feature={
       'image/encoded': bytes_feature(image_data),
       'image/format': bytes_feature(image_format),
-      'image/class/label': int64_feature(class_id),
+      'image/class/label': bytes_feature(image_name),
       'image/height': int64_feature(height),
       'image/width': int64_feature(width),
-      'image/bbox/ymin': Float_feature(lst_ymin),
-      'image/bbox/xmin': Float_feature(lst_xmin),
-      'image/bbox/ymax': Float_feature(lst_ymax),
-      'image/bbox/xmax': Float_feature(lst_xmax),
+      'image/object/bbox/ymin': Float_feature(lst_ymin),
+      'image/object/bbox/xmin': Float_feature(lst_xmin),
+      'image/object/bbox/ymax': Float_feature(lst_ymax),
+      'image/object/bbox/xmax': Float_feature(lst_xmax),
+      'image/object/class/label': int64_feature(lst_label),
   }))
 
 def image_to_tfexample_test(image_data, image_format, height, width, image_name):
